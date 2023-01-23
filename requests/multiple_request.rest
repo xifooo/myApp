@@ -13,4 +13,4 @@ content-type: application/json
 }
 
 ###
-GET http://localhost:3001/api/notes
+GET http://localhost:3001/api/notes/63cd806b7a1f20f13abc8efd
