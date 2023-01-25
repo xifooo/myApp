@@ -71,7 +71,7 @@ const App = () => {
     };
 
   const addNote = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const noteObject = {
       content: newNote,
       date: new Date().toISOString(),
@@ -79,18 +79,22 @@ const App = () => {
     };
 
     noteService
-    .create(noteObject)
-    .then(response => {
-      setNotes(notes.concat(response.data));
-      setNewNote('');
-      })  
+      .create(noteObject)
+      .then(response => {
+        setNotes(notes.concat(response.data));
+        setNewNote('');
+        })
+      .catch(error => {
+        setErrorMessage(
+          `The form of Note is not right: ${error}`)
+        })
     };
-      // filtered notes
+    // filtered notes
     const notesToShow = showAll
       ? notes
       : notes.filter(note => note.important === true)
   
-      // input's onChange event handler
+    // input's onChange event handler
     const handleNoteChange = (event) => {
       console.log(event.target.value)
       setNewNote(event.target.value)
