@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI
 
@@ -10,7 +10,7 @@ mongoose.connect(url)
   })
   .catch((error) => {
     console.log('error connecting to MongoDB', error.message)
-  });
+  })
 
 const noteSchema = new mongoose.Schema({
   content: {
@@ -23,14 +23,14 @@ const noteSchema = new mongoose.Schema({
     required: true
   },
   important: Boolean
-});
+})
 
-noteSchema.set("toJSON", {
+noteSchema.set('toJSON', {
   transform: (document, returnedObj) => {
     returnedObj.id = returnedObj._id.toString()
     delete returnedObj._id
     delete returnedObj.__v
   }
-});
+})
 
-module.exports = mongoose.model("Note", noteSchema);
+module.exports = mongoose.model('Note', noteSchema)
