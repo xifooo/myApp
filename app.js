@@ -3,6 +3,7 @@ const express = require('express')
 require("express-async-errors")
 const app = express()
 const cors = require('cors')
+const userRouter = require("./controllers/users")
 const notesRouter = require('./controllers/notes')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -26,6 +27,7 @@ app.use(express.static(path.join(".", "client", "build")));
 app.use(express.json())
 app.use(middleware.requestLogger)
 
+app.use("/api/users", userRouter)
 app.use('/api/notes', notesRouter)
 
 app.use(middleware.unknownEndpoint)

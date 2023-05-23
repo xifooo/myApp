@@ -1,0 +1,42 @@
+GET http://localhost:3001/api/users HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/users/init-users/2 HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/users/?id=646b49750dec28ffc075db4b HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "mluukkai",
+    "name": "jaks",
+    "password": "123123"
+}
+
+###
+
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+"username": "hellas",
+"name": "jyeho",
+"password": "141414"
+}
+
+###
+
+POST http://localhost:3001/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+"username": "hellas",
+"name": "jyehoo",
+"password": "111444"
+}

@@ -1,6 +1,7 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
-
+const User = require('../models/user')
+const init_db = require("../utils/init_db")
 
 // notesRouter.get("/", (request, response, next) => {
 //     Note.find({}).then(notes => {
@@ -47,17 +48,33 @@ notesRouter.delete('/:id', async (request, response) => {
     response.status(204).end()
 })
 
+// notesRouter.post('/', async (request, response) => {
+//   const body = request.body
+//   const user = await User.findById(body.userId)
+
+//   const note = new Note({
+//     content: body.content,
+//     important: body.important || false,
+//     date: new Date(),
+//     user: user._id
+//   })
+
+//   const savedNote = await note.save()
+//   user.notes = user.notes.concat(savedNote._id)
+//   await user.save()
+
+//   response.status(201).json(savedNote)
+// })
 notesRouter.post('/', async (request, response) => {
   const body = request.body
 
   const note = new Note({
     content: body.content,
     important: body.important || false,
-    date: new Date(),
   })
 
   const savedNote = await note.save()
-  response.json(savedNote)
+  response.status(201).json(savedNote)
 })
 
 
@@ -91,5 +108,41 @@ notesRouter.put('/:id', async (request, response) => {
     )
   response.json(updatedNote)
 })
+
+// notesRouter.get("/init-notes", async (req, res) => {
+//   await Note.deleteMany({})
+
+//   const userIdList = (await User.find({})).map(u => u._id)
+
+//   const arr = []
+//   Array(userIdList.length).fill().forEach(() => {
+//     arr.push(Math.floor(Math.random()*(userIdList.length+1)))
+//   })
+
+//   for (let i of arr) {
+//     for (let n of init_db.initialNotes) {
+//       const note = new Note({
+//         content: n.content,
+//         important: n.important || false,
+//         date: new Date(),
+//         user: userIdList[i]["id"]
+//       })
+//       const savedNote = await note.save()
+//       const user = await User.findById(userIdList[i])
+//       user.notes = user.notes.concat(savedNote._id)
+//       await user.save()
+//     }
+//   }
+//   // const newdata = init_db.initialNotes.map(
+//   //   u => 
+//   //   ({
+//   //     ...u,
+//   //     important: u.important || false,
+//   //     data: new Date(),
+//   //     user: userIdList[Math.floor(Math.random()*3)]
+//   //   })
+//   // )
+//   // await Note.insertMany(newdata)
+// })
 
 module.exports = notesRouter

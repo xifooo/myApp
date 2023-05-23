@@ -1,0 +1,21 @@
+GET http://localhost:3001/api/notes HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/notes/init-notes HTTP/1.1
+
+###
+
+GET http://localhost:3001/api/notes/?id= HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/notes HTTP/1.1
+User-Agent: REST-Client
+Content-Type: application/json
+
+{
+    "content": "mluukkai",
+    "important": true,
+    "userId": "123123"
+}
