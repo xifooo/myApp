@@ -3,86 +3,78 @@ const Note = require('../models/note')
 const User = require('../models/user')
 const init_db = require("../utils/init_db")
 
-// notesRouter.get("/", (request, response, next) => {
+// notesRouter.get("/", (req, res, next) => {
 //     Note.find({}).then(notes => {
-//           response.json(notes);
+//           res.json(notes);
 //   });
 // });
 
-// notesRouter.get('/:id', async (request, response, next) => {
+// notesRouter.get('/:id', async (req, res, next) => {
 //   try {
-//     const note = await Note.findById(request.params.id)
+//     const note = await Note.findById(req.params.id)
 //     if (note) {
-//         response.json(note)
+//         res.json(note)
 //       } else {
-//       response.status(404).end()
+//       res.status(404).end()
 //     }
 //   } catch(exception) {
 //     next(exception)
 //     }
 // })
   
-notesRouter.get('/', async (request, response) => {
+notesRouter.get('/', async (req, res) => {
   const notes = await Note.find({})
-  response.json(notes)
+  res.json(notes)
 })
 
-notesRouter.get('/:id', async (request, response) => {
-  const note = await Note.findById(request.params.id)
+
+notesRouter.get('/:id', async (req, res) => {
+  const note = await Note.findById(req.params.id)
   if (note) {
-    response.json(note)
+    res.json(note)
   } else {
-    response.status(404).end()
+    res.status(404).end()
   }
 })
 
-notesRouter.delete('/:id', async (request, response) => {
+
+notesRouter.delete('/:id', async (req, res) => {
   // 不再使用next(exception)，因为使用了express-async-erros库
   // try {
-  //   await Note.findByIdAndRemove(request.params.id)
-  //   response.status(204).end()
+  //   await Note.findByIdAndRemove(req.params.id)
+  //   res.status(204).end()
   // } catch (exception) {
   //   next(exception)
   // }
-    await Note.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    await Note.findByIdAndRemove(req.params.id)
+    res.status(204).end()
 })
 
-// notesRouter.post('/', async (request, response) => {
-//   const body = request.body
-//   const user = await User.findById(body.userId)
 
-//   const note = new Note({
-//     content: body.content,
-//     important: body.important || false,
-//     date: new Date(),
-//     user: user._id
-//   })
-
-//   const savedNote = await note.save()
-//   user.notes = user.notes.concat(savedNote._id)
-//   await user.save()
-
-//   response.status(201).json(savedNote)
-// })
-notesRouter.post('/', async (request, response) => {
-  const body = request.body
+notesRouter.post('/', async (req, res) => {
+  const body = req.body
+  const user = await User.findById(body.userId)
 
   const note = new Note({
     content: body.content,
     important: body.important || false,
+    date: new Date(),
+    user: user._id
   })
 
   const savedNote = await note.save()
-  response.status(201).json(savedNote)
+  user.notes = user.notes.concat(savedNote._id)
+  await user.save()
+
+  res.status(201).json(savedNote)
 })
 
 
-// notesRouter.post("/", (request, response, next) => {
-//   const body = request.body;
+// notesRouter.post("/", (req, res, next) => {
+//   const body = req.body;
   
 //   if (body.content === undefined) {
-//       return response.status(400).json({  // 400 Bad request
+//       return res.status(400).json({  // 400 Bad req
 //           error: "content missing"
 //       })
 //   };
@@ -93,56 +85,78 @@ notesRouter.post('/', async (request, response) => {
 //   });
   
 //   note.save().then(savedNote => {
-//       response.status(201).json(savedNote);
+//       res.status(201).json(savedNote);
 //   })
 //   .catch(error => next(error));
 // });
 
-notesRouter.put('/:id', async (request, response) => {
-  const { content, important } = request.body;
+
+notesRouter.put('/:id', async (req, res) => {
+  const { content, important } = req.body;
 
   const updatedNote = await Note.findByIdAndUpdate(
-    request.params.id, 
+    req.params.id, 
     { content, important }, 
     { new: true, runValidators: true, context: "query" }
     )
-  response.json(updatedNote)
+  res.json(updatedNote)
 })
 
-// notesRouter.get("/init-notes", async (req, res) => {
-//   await Note.deleteMany({})
 
-//   const userIdList = (await User.find({})).map(u => u._id)
+notesRouter.get("/init-notes/2", async (req, res) => {
+  await Note.deleteMany({})
 
-//   const arr = []
-//   Array(userIdList.length).fill().forEach(() => {
-//     arr.push(Math.floor(Math.random()*(userIdList.length+1)))
-//   })
+  const allUsers = await User.find({})
+  const userIdList = allUsers.map(u => u.id)
 
-//   for (let i of arr) {
-//     for (let n of init_db.initialNotes) {
-//       const note = new Note({
-//         content: n.content,
-//         important: n.important || false,
-//         date: new Date(),
-//         user: userIdList[i]["id"]
-//       })
-//       const savedNote = await note.save()
-//       const user = await User.findById(userIdList[i])
-//       user.notes = user.notes.concat(savedNote._id)
-//       await user.save()
-//     }
-//   }
-//   // const newdata = init_db.initialNotes.map(
-//   //   u => 
-//   //   ({
-//   //     ...u,
-//   //     important: u.important || false,
-//   //     data: new Date(),
-//   //     user: userIdList[Math.floor(Math.random()*3)]
-//   //   })
-//   // )
-//   // await Note.insertMany(newdata)
-// })
+  for (let x in Array(userIdList.length)) {
+    const rdN = Math.floor(Math.random()*(userIdList.length+1))
+
+    for (let y in init_db.initialNotes){
+      const note = new Note({
+        content: y.content,
+        important: y.important || false,
+        date: y.date || new Date(),
+        user: userIdList[rdN]
+      })
+      const savedNote = await note.save()
+      const user = await User.findById(userIdList[rdN])
+      user.notes = user.notes.push(savedNote)
+      await user.save()
+    }
+  }
+  // res.status(304).redirect("/")
+
+  // const rdarr = []
+  // Array(userIdList.length).fill().forEach(() => {
+  //   rdarr.push(Math.floor(Math.random()*(userIdList.length+1)))
+  // })
+  // for (let i of rdarr) {
+  //   for (let n of init_db.initialNotes) {
+  //     const note = new Note({
+  //       content: n.content,
+  //       important: n.important || false,
+  //       date: n.date || new Date(),
+  //       user: userIdList[i]
+  //     })
+  //     const savedNote = await note.save()
+  //     const user = await User.findById(userIdList[i])
+  //     // user.notes = user.notes.concat(savedNote._id)
+  //     // await user.save()
+  //   }
+  // }
+
+
+  // const newdata = init_db.initialNotes.map(
+  //   u => 
+  //   ({
+  //     ...u,
+  //     important: u.important || false,
+  //     data: new Date(),
+  //     user: userIdList[Math.floor(Math.random()*3)]
+  //   })
+  // )
+  // await Note.insertMany(newdata)
+})
 
 module.exports = notesRouter

@@ -2,7 +2,7 @@ GET http://localhost:3001/api/notes HTTP/1.1
 
 ###
 
-GET http://localhost:3001/api/notes/init-notes HTTP/1.1
+GET http://localhost:3001/api/notes/init-notes/2 HTTP/1.1
 
 ###
 
@@ -17,5 +17,5 @@ Content-Type: application/json
 {
     "content": "mluukkai",
     "important": true,
-    "userId": "123123"
+    "userId": "646b6ce5a4f0fa8d17ecb14f"
 }
