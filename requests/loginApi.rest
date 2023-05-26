@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/login HTTP/1.1
+User-Agent: REST-Client
+Content-Type: application/json
+
+{
+    "username": "mlonokai",
+    "password": "123123"
+}
