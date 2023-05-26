@@ -3,15 +3,18 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const init_db = require("../utils/init_db")
 
+
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({})
+  const users = await User.find({}).populate("notes", {"content": 1, "date": 1})
   res.status(200).json(users)
 })
+
 
 usersRouter.get('/:id', async (req, res) => {
   const users = await User.findById({ "id": req.params.id })
   res.status(200).json(users)
 })
+
 
 usersRouter.post('/', async (req, res) => {
   const { username, name, password } = req.body
@@ -36,6 +39,7 @@ usersRouter.post('/', async (req, res) => {
   
   res.status(201).json(savedUser)
 })
+
 
 usersRouter.post("/init-users/2", async (req, res) => {
   // await User.deleteMany({})
@@ -87,5 +91,6 @@ usersRouter.post("/init-users/2", async (req, res) => {
 
       initUsers(init_db.initialUsers);
 })
+
 
 module.exports = usersRouter
