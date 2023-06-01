@@ -135,7 +135,7 @@ notesRouter.get("/init-notes/2", async (req, res) => {
       })
       const savedNote = await note.save()
       const user = await User.findById(userIdList[rdN])
-      user.notes = user.notes.push(savedNote)
+      user.notes = user.notes.concat(savedNote)
       await user.save()
     }
   }
