@@ -1,17 +1,28 @@
 import axios from 'axios'
-const baseUrl = '/api/notes'
+const baseUrl = 'http://localhost:3001/api/notes'
 
-const getAll = () => {
-  return axios.get(baseUrl)
+let token = null
+
+const setToken = newToken => {
+  token = `bearer ${newToken}`
 }
 
-const create = newObject => {
-  return axios.post(baseUrl, newObject)
+const getAll = async () => {
+  const res = await axios.get(baseUrl)
+  return res.data
 }
 
-const update = (id, newObject) => {
-  return axios.put(`${baseUrl}/${id}`, newObject)
+const create = async newObject => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const req = await axios.post(baseUrl, newObject, config)
+  return req.data
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update }
+const update = async (id, newObject) => {
+  const res = await axios.put(`${baseUrl}/${id}`, newObject)
+  return res.data
+}
+
+export default { setToken, getAll, create, update }

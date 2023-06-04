@@ -28,7 +28,7 @@ mongoose.connect(config.MONGODB_URI, {
 // 自上而下地加载 middlewares
 app.use(cors())
 // app.use(express.static('build'))
-app.use(express.static(path.join(".", "client", "build")));
+// app.use(express.static(path.join(".", "client", "build")));
 app.use(express.json())
 app.use(middleware.requestLogger)
 
