@@ -1,14 +1,21 @@
 import { useState } from "react"
 
-const LoginForm = ({ userLogin }) => {
+const LoginForm = ({ handleuserLogin }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    userLogin({ username, password })
-    setUsername("")
-    setPassword("")
+  const handleLogin = (event) => {
+    try {
+      event.preventDefault()
+      handleuserLogin({ username, password })
+      // setUsername("")
+      // setPassword("")
+    } catch (exception) {
+      window.alert(`Wrong: ${exception}`)
+    } finally {
+      setUsername("")
+      setPassword("")
+    }
   }
   return (
     <div>
