@@ -5,36 +5,9 @@ import loginService from "./services/login"
 import Footer from "./Components/Footer"
 import Notification from "./Components/Notification"
 import Note from "./Components/Note"
+import NoteForm from "./Components/NoteForm"
 import LoginForm from "./Components/LoginForm"
 import Togglable from "./Components/Togglabble"
-
-
-const NoteForm = ({ createNote }) => {
-  const [newNote, setNewNote] = useState("")
-
-  const addNote = e => {
-    e.preventDefault()
-    createNote({
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5
-    })
-
-    setNewNote("")
-  }
-  return (
-    <div>
-      <h2>Create a new note</h2>
-      <form onSubmit={addNote}>
-        <input
-          value={newNote}
-          onChange={({ target }) => { setNewNote(target.value) }}
-        />
-        <button type="submit"> save </button>
-      </form>
-    </div>
-  )
-}
 
 
 const App = () => {
@@ -52,7 +25,7 @@ const App = () => {
       .then(res => {
         setNotes(res)
       })
-  }, []);
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
@@ -80,27 +53,19 @@ const App = () => {
     }
   }
 
-  // const loginForm = () => (
-  //   <div>
-  //     <Togglable buttonLabel="Login">
-  //       <LoginForm handleuserLogin={handleUserLogin} />
-  //     </Togglable>
-  //   </div>
-  // )
-
   const noteFormRef = useRef()
 
   const addNote = (noteObj) => {
-    noteFormRef.current.toggleVisibility()
     noteService
       .create(noteObj)
       .then(returnedNotes => {
         setNotes(notes.concat(returnedNotes))
+        noteFormRef.current.toggleVisibility()
       })
       .catch(error => {
         setErrorMessage(`Some errors occupying::: ${error}`)
       })
-  };
+  }
 
   const toggleImportanceOf = id => {
     const note = notes.find(item => item.id === id)
@@ -111,7 +76,7 @@ const App = () => {
         setNotes(notes.map(n => n.id !== id ? n : res))
       })
       .catch(error => {
-        setErrorMessage(`Note '${note.content}' was already removed from server`)
+        setErrorMessage(`Wrong things occupying:::${error}`)
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -119,26 +84,17 @@ const App = () => {
       })
   }
 
-  // const notesForm = () => (
-  //   <div>
-  //     <p>{user.name} logged-in</p>
-  //     <Togglable buttonLabel="add a new note" ref={noteFormRef}>
-  //       <NoteForm createNote={addNote} />
-  //     </Togglable>
-  //   </div>
-  // )
-
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
 
-      {!user && 
+      {!user &&
         <Togglable buttonLabel="Login">
           <LoginForm handleuserLogin={handleUserLogin} />
         </Togglable>
       }
-      {user && 
+      {user &&
         <div>
           <p>{user.username} logged-in</p>
           <Togglable buttonLabel="add a new note" ref={noteFormRef}>

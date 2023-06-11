@@ -1,4 +1,5 @@
 import { useState } from "react"
+import PropTypes from "prop-types"
 
 const LoginForm = ({ handleuserLogin }) => {
   const [username, setUsername] = useState("")
@@ -8,13 +9,8 @@ const LoginForm = ({ handleuserLogin }) => {
     try {
       event.preventDefault()
       handleuserLogin({ username, password })
-      // setUsername("")
-      // setPassword("")
     } catch (exception) {
       window.alert(`Wrong: ${exception}`)
-    } finally {
-      setUsername("")
-      setPassword("")
     }
   }
   return (
@@ -43,6 +39,9 @@ const LoginForm = ({ handleuserLogin }) => {
       </form>
     </div>
   )
+}
+LoginForm.prototype = {
+  handleuserLogin: PropTypes.func.isRequired
 }
 
 export default LoginForm
