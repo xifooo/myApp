@@ -1,5 +1,5 @@
-import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/notes'
+import axios from "axios"
+const baseUrl = "http://localhost:3001/api/notes"
 
 let token = null
 
@@ -24,5 +24,4 @@ const update = async (id, newObject) => {
   const res = await axios.put(`${baseUrl}/${id}`, newObject)
   return res.data
 }
-
 export default { setToken, getAll, create, update }
