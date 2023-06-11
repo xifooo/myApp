@@ -83,7 +83,6 @@ const App = () => {
         setNotes(notes.filter(n => n.id !== id))
       })
   }
-
   return (
     <div>
       <h1>Notes</h1>
