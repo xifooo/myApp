@@ -1,14 +1,14 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
 
-const LoginForm = ({ handleuserLogin }) => {
+const LoginForm = ({ handleUserLogin }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
   const handleLogin = (event) => {
     try {
       event.preventDefault()
-      handleuserLogin({ username, password })
+      handleUserLogin({ username, password })
     } catch (exception) {
       window.alert(`Wrong: ${exception}`)
     }
@@ -40,8 +40,8 @@ const LoginForm = ({ handleuserLogin }) => {
     </div>
   )
 }
-LoginForm.prototype = {
-  handleuserLogin: PropTypes.func.isRequired
+LoginForm.propTypes = {
+  handleUserLogin: PropTypes.func.isRequired
 }
 
 export default LoginForm

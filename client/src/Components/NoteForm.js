@@ -28,7 +28,7 @@ const NoteForm = ({ createNote }) => {
   )
 }
 
-NoteForm.prototype = {
+NoteForm.propTypes = {
   createNote: PropTypes.func.isRequired
 }
 
