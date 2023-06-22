@@ -19,3 +19,15 @@ Content-Type: application/json
     "important": true,
     "userId": "646b6ce5a4f0fa8d17ecb14f"
 }
+
+###
+
+POST http://localhost:3001/api/notes HTTP/1.1
+User-Agent: REST-Client
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sb25va2FpIiwiaWQiOiI2NDhmMTE3ZDcwNDhiMGU3ZDUzYWE3MDciLCJpYXQiOjE2ODcwOTc3NDV9.W5Tf9LxKtI7PFeCGGLN6OvGSfQZkWRcJ2Hxtren-GG8
+
+{
+    "content": "qwerttt",
+    "important": true
+}

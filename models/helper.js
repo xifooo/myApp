@@ -1,11 +1,11 @@
 const initialUsers = [
   {
-    username: 'mluukkai',
+    username: "mluukkai",
     name: "jaks",
     password: "123123",
   },
   {
-    username: 'hellas',
+    username: "hellas",
     name: "jyeho",
     password: "141414",
   },

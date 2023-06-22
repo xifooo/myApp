@@ -1,6 +1,6 @@
-const notesRouter = require('express').Router()
-const Note = require('../models/note')
-const User = require('../models/user')
+const notesRouter = require("express").Router()
+const Note = require("../models/note")
+const User = require("../models/user")
 const init_db = require("../utils/init_db")
 const jwt = require("jsonwebtoken")
 
@@ -23,13 +23,13 @@ const jwt = require("jsonwebtoken")
 //     }
 // })
 
-notesRouter.get('/', async (req, res) => {
+notesRouter.get("/", async (req, res) => {
   const notes = await Note.find({})
   res.json(notes)
 })
 
 
-notesRouter.get('/:id', async (req, res) => {
+notesRouter.get("/:id", async (req, res) => {
   const note = await Note.findById(req.params.id)
   if (note) {
     res.json(note)
@@ -39,7 +39,7 @@ notesRouter.get('/:id', async (req, res) => {
 })
 
 
-notesRouter.delete('/:id', async (req, res) => {
+notesRouter.delete("/:id", async (req, res) => {
   // 不再使用next(exception)，因为使用了express-async-erros库
   // try {
   //   await Note.findByIdAndRemove(req.params.id)
@@ -53,13 +53,13 @@ notesRouter.delete('/:id', async (req, res) => {
 
 const getTokenFrom = request => {
   const authorization = request.get("authorization")
-  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
-    return authorization.substring(7)
+  if (authorization && authorization.startsWith("Bearer ")) {
+    return authorization.replace("Bearer ", "")
   }
   return null
 }
 
-notesRouter.post('/', async (req, res) => {
+notesRouter.post("/", async (req, res) => {
   const body = req.body
   const token = getTokenFrom(req)
   const decodeToken = jwt.verify(token, process.env.SECRET)
@@ -105,8 +105,8 @@ notesRouter.post('/', async (req, res) => {
 // });
 
 
-notesRouter.put('/:id', async (req, res) => {
-  const { content, important } = req.body;
+notesRouter.put("/:id", async (req, res) => {
+  const { content, important } = req.body
 
   const updatedNote = await Note.findByIdAndUpdate(
     req.params.id,

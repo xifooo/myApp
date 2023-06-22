@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from "react"
 import noteService from "./services/notes"
 import loginService from "./services/login"
 
-import Footer from "./Components/Footer"
-import Notification from "./Components/Notification"
-import Note from "./Components/Note"
-import NoteForm from "./Components/NoteForm"
-import LoginForm from "./Components/LoginForm"
-import Togglable from "./Components/Togglabble"
+import Footer from "./Components/Footer.js"
+import Togglable from "./Components/Togglabble.js"
+import LoginForm from "./Components/LoginForm.js"
+import Notification from "./Components/Notification.js"
+import Note from "./Components/Note.js"
+import NoteForm from "./Components/NoteForm.js"
 
 
 const App = () => {
@@ -17,7 +17,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   const [user, setUser] = useState(null)
-
 
   useEffect(() => {
     noteService
@@ -31,15 +30,14 @@ const App = () => {
     const loggedUserJSON = window.localStorage.getItem("loggedNoteappUser")
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
       noteService.setToken(user.token)
+      setUser(user)
     }
   }, [])
 
-  const handleUserLogin = (userNameAndPasswd) => {
+  const handleUserLogin = async (userNameAndPasswd) => {
     try {
-      const user = loginService.login(userNameAndPasswd)
-
+      const user = await loginService.login(userNameAndPasswd)
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user))
       noteService.setToken(user.token)
       setUser(user)
@@ -53,18 +51,38 @@ const App = () => {
     }
   }
 
+  const handleLogout = () => {
+    try {
+      window.localStorage.removeItem("loggedNoteappUser")
+      setNotes([])
+      setUser(null)
+      noteService.setToken(null)
+
+      setTimeout(() => {
+        window.location.href = "/"
+      }, 5000)
+    } catch (exception) {
+      setErrorMessage("Logout failed")
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   const noteFormRef = useRef()
 
-  const addNote = (noteObj) => {
-    noteService
-      .create(noteObj)
-      .then(returnedNotes => {
-        setNotes(notes.concat(returnedNotes))
-        noteFormRef.current.toggleVisibility()
-      })
-      .catch(error => {
-        setErrorMessage(`Some errors occupying::: ${error}`)
-      })
+  const addNote = async (noteObj) => {
+    try {
+      const theNote = {
+        ...noteObj,
+        user: user.id
+      }
+      const returnedNotes = await noteService.create(theNote)
+      await setNotes(notes.concat(returnedNotes))
+      await noteFormRef.current.toggleVisibility()
+    } catch (exception) {
+      setErrorMessage(`Some errors occupying???::: ${exception}`)
+    }
   }
 
   const notesToShow = showAll
@@ -94,12 +112,15 @@ const App = () => {
 
       {!user &&
         <Togglable buttonLabel="Login">
-          <LoginForm handleuserLogin={handleUserLogin} />
+          <LoginForm handleUserLogin={handleUserLogin} />
         </Togglable>
       }
       {user &&
         <div>
-          <p>{user.username} logged-in</p>
+          <p>
+            {user.username} logged-in
+            <button onClick={handleLogout}> Logout </button>
+          </p>
           <Togglable buttonLabel="add a new note" ref={noteFormRef}>
             <NoteForm createNote={addNote} />
           </Togglable>
@@ -116,7 +137,7 @@ const App = () => {
       {notesToShow.map(noteObj =>
         <Note
           key={noteObj.id}
-          notes={noteObj}
+          note={noteObj}
           toggleImportance={() => toggleImportanceOf(noteObj.id)}
         />
       )}
