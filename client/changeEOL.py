@@ -48,6 +48,6 @@ def main(targetFolders: typing.Sequence = [], targetSuffixs: typing.Sequence = [
 
 if __name__ == "__main__":
     targetFolders = ["src"]
-    targetSuffixs = ["js"]
+    targetSuffixs = [".js", ".css", ".html"]
     main(targetFolders, targetSuffixs)
     print("done")

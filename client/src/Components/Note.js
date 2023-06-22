@@ -1,31 +1,21 @@
 import PropTypes from "prop-types"
 
-const Note = ({ notes, showAll, toggleImportanceOf }) => {
-  const notesToShow = showAll
-    ? notes
-    : notes.filter(item => item.important === true)
+const Note = ({ note, toggleImportance }) => {
+  const label = note.important
+    ? "make not important"
+    : "make important"
 
   return (
-    <ul>
-      {notesToShow.map(item =>
-        <li key={item.id}>
-
-          {item.content}
-
-          <button onClick={() => toggleImportanceOf(item.id)}>
-            {item.important ? "make not important" : "make important"}
-          </button>
-
-        </li>
-      )}
-    </ul>
+    <li className='note'>
+      {note.content}
+      <button onClick={toggleImportance}>{label}</button>
+    </li>
   )
 }
 
-Note.prototype = {
-  notes: PropTypes.array.isRequired,
-  showAll: PropTypes.bool.isRequired,
-  toggleImportanceOf: PropTypes.func.isRequired
+Note.propTypes = {
+  note: PropTypes.object.isRequired,
+  toggleImportance: PropTypes.func.isRequired
 }
 
 export default Note

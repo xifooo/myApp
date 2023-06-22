@@ -1,39 +1,40 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'commonjs': true,
-    'es2021': true
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es2021": true,
+    "node": true
   },
-  'extends': 'eslint:recommended',
-  'overrides': [
+  "extends": "eslint:recommended",
+  "overrides": [
   ],
-  'parserOptions': {
-    'ecmaVersion': 'latest'
+  "parserOptions": {
+    "ecmaVersion": "latest"
   },
-  'rules': {
-    'indent': [
-      'error',
+  "rules": {
+    "indent": [
+      "error",
       2
     ],
-    'linebreak-style': [
-      'error',
-      'unix'
+    "linebreak-style": [
+      "error",
+      "unix"
     ],
-    'quotes': [
-      'error',
-      'single'
+    "quotes": [
+      "error",
+      "double"
     ],
-    'semi': [
-      'error',
-      'never'
+    "semi": [
+      "error",
+      "never"
     ],
-    'eqeqeq': 'error',
-    'no-trailing-spaces': 'error',
-    'object-curly-spacing': [
-      'error', 'always'
+    "eqeqeq": "error",
+    "no-trailing-spaces": "error",
+    "object-curly-spacing": [
+      "error", "always"
     ],
-    'arrow-spacing': [
-      'error', { 'before': true, 'after': true }
+    "arrow-spacing": [
+      "error", { "before": true, "after": true }
     ]
   }
 }

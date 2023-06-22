@@ -7,13 +7,15 @@
     "start": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=development nodemon server.js",
     "lint": "eslint .",
-    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
+    "start:test": "cross-env NODE_ENV=test nodemon server.js"
   },
   "author": "jyeho",
   "license": "ISC",
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.32.0",
+    "eslint-plugin-react": "^7.32.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "supertest": "^6.3.3"

@@ -6,7 +6,7 @@ POST http://localhost:3001/api/users/init-users/2 HTTP/1.1
 
 ###
 
-GET http://localhost:3001/api/users/?id=646b49750dec28ffc075db4b HTTP/1.1
+GET http://localhost:3001/api/users/648e3db749b272904877cef4 HTTP/1.1
 
 ###
 

@@ -5,30 +5,40 @@ const NoteForm = ({ createNote }) => {
   const [newNote, setNewNote] = useState("")
 
   const addNote = e => {
-    e.preventDefault()
-    createNote({
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5
-    })
+    try {
+      e.preventDefault()
+      console.log(newNote)
+      createNote({
+        content: newNote || "nothing fiil",
+        // date: new Date().toISOString(),
+        // important: Math.random() > 0.5
+        important: false
+      })
 
-    setNewNote("")
+      setNewNote("")
+    } catch (exception) {
+      window.alert(`Wrong happen : ${exception} !!!`)
+    }
+  }
+
+  const handleNoteChange = e => {
+    setNewNote(e.target.value)
+    console.log(newNote)
   }
   return (
-    <div>
+    <form onSubmit={addNote}>
       <h2>Create a new note</h2>
-      <form onSubmit={addNote}>
-        <input
-          value={newNote}
-          onChange={({ target }) => { setNewNote(target.value) }}
-        />
-        <button type="submit"> save </button>
-      </form>
-    </div>
+      <input
+        value={newNote}
+        onChange={handleNoteChange}
+      />
+      <button type="submit"> save </button>
+    </form>
+
   )
 }
 
-NoteForm.prototype = {
+NoteForm.propTypes = {
   createNote: PropTypes.func.isRequired
 }
 
